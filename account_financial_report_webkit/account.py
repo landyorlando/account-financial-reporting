@@ -42,19 +42,19 @@ class AccountAccount(orm.Model):
                  "only centralized amounts per period.")
     }
 
-    _defaults = {
-        'centralized': False,
-    }
+    # _defaults = {
+    #     'centralized': False,
+    # }
 
     # Related to WebKit reports: this constraint is not relevant anymore,
     # since the initial balance of the partner reports
     # (ledger, balance, open invoices) is computed on-the-fly, instead of
     # using the opening journal entry data (hence the deferral method)
-    def _check_account_type(self, cr, uid, ids, context=None):
-        return True
-
-    _constraints = [
-        (_check_account_type,
-         '',
-         ['user_type', 'type']),
-    ]
+    # def _check_account_type(self, cr, uid, ids, context=None):
+    #     return True
+    #
+    # _constraints = [
+    #     (_check_account_type,
+    #      '',
+    #      ['user_type', 'type']),
+    # ]
