@@ -476,10 +476,11 @@ msgstr "Código / Ref."
 #. module: account_financial_report_webkit
 #: code:addons/account_financial_report_webkit/report/trial_balance.py:49
 #: model:ir.actions.act_window,name:account_financial_report_webkit.action_account_trial_balance_menu_webkit
+#: model:ir.ui.menu,name:account_financial_report_webkit.menu_general_Balance_report_wk
 #: view:trial.balance.webkit:0
 #, python-format
 msgid "Trial Balance"
-msgstr "Balance de sumas y saldos"
+msgstr "Balance de sumas y saldos(WK)"
 
 #. module: account_financial_report_webkit
 #: report:addons/account_financial_report_webkit/report/templates/account_report_profit_loss.mako:87
@@ -733,9 +734,10 @@ msgstr "Filtro de empresa"
 #: code:addons/account_financial_report_webkit/report/general_ledger.py:47
 #: view:general.ledger.webkit:0
 #: model:ir.actions.act_window,name:account_financial_report_webkit.action_account_general_ledger_menu_webkit
+#: model:ir.ui.menu,name:account_financial_report_webkit.menu_general_ledger_wk
 #, python-format
 msgid "General Ledger"
-msgstr "Libro mayor"
+msgstr "Libro mayor(WK)"
 
 #. module: account_financial_report_webkit
 #: view:trial.balance.webkit:0
