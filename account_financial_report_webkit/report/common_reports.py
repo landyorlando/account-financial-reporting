@@ -127,7 +127,7 @@ class CommonReportHeaderWebkit(common_report_header):
                                      context=None):
         """Sort accounts by code respecting their structure"""
 
-        def recursive_sort_by_code(accounts, parent):
+        def recursive_sort_by_code(accounts, parent, old_sorted = []):
             sorted_accounts = []
             # add all accounts with same parent
             level_accounts = [account for account in accounts
@@ -146,18 +146,15 @@ class CommonReportHeaderWebkit(common_report_header):
             level_accounts = sorted(level_accounts, key=lambda a: a['code'])
 
             for level_account in level_accounts:
-                sorted_accounts.append(level_account['id'])
-                sorted_accounts.extend(
-                    recursive_sort_by_code(accounts, parent=level_account))
+                if level_account['id'] not in old_sorted:
+                    sorted_accounts.append(level_account['id'])
+                sorted_accounts.extend(recursive_sort_by_code(accounts, parent=level_account, old_sorted=sorted_accounts))
             return sorted_accounts
 
         if not account_ids:
             return []
 
-        accounts_data = self.pool.get('account.account').read(
-            self.cr, self.uid, account_ids,
-            ['id', 'parent_id', 'level', 'code', 'child_consol_ids'],
-            context=context)
+        accounts_data = self.pool.get('account.account').read(self.cr, self.uid, account_ids, ['id', 'parent_id', 'level', 'code', 'child_consol_ids'],  context=context)
 
         sorted_accounts = []
 
@@ -165,8 +162,7 @@ class CommonReportHeaderWebkit(common_report_header):
                               if account_data['id'] in root_account_ids]
         for root_account_data in root_accounts_data:
             sorted_accounts.append(root_account_data['id'])
-            sorted_accounts.extend(
-                recursive_sort_by_code(accounts_data, root_account_data))
+            sorted_accounts.extend(recursive_sort_by_code(accounts_data, root_account_data))
 
         # fallback to unsorted accounts when sort failed
         # sort fails when the levels are miscalculated by account.account
@@ -192,13 +188,13 @@ class CommonReportHeaderWebkit(common_report_header):
         if not isinstance(account_ids, list):
             account_ids = [account_ids]
         acc_obj = self.pool.get('account.account')
+        account_ids.sort()
         for account_id in account_ids:
             accounts.append(account_id)
             accounts += acc_obj._get_children_and_consol(
                 self.cursor, self.uid, account_id, context=context)
         res_ids = list(set(accounts))
-        res_ids = self.sort_accounts_with_structure(
-            account_ids, res_ids, context=context)
+        res_ids = self.sort_accounts_with_structure(account_ids, res_ids, context=context)
 
         if exclude_type or only_type or filter_report_type:
             sql_filters = {'ids': tuple(res_ids)}
